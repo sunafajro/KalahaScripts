@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Cards</title>
+</head>
+<body>
+    <div class="row" id="flashcards-root">
+        <div class="col-sm-8"><img alt="Card 1" id="main-card" src="./medium/1.jpg" style="height: 700px;" /></div>  
+        <div class="col-sm-4" id="flashcards-sidebar" style="height: 700px; overflow-y: scroll">&nbsp;</div>
+    </div>    
+    <script>
+        var sidebar = document.getElementById('flashcards-sidebar');
+        sidebar.innerText = '';
+        function changeCard(e){
+            clearBorder();
+            var target = e.target.id;
+            var thumb  = document.getElementById(target);
+            thumb.style.border = '1px solid #75caeb';
+            var id     = target.split('-')[1];
+            var img    = document.querySelector('#main-card');
+            img.src    = './medium/' + id + '.jpg';
+            img.alt    = 'Карточка ' + id;
+        }
+        function clearBorder() {
+            for (var i = 1; i < 91; i++) {
+            var thumb = document.getElementById('CardTumb-' + i);
+            thumb.style.border = '1px solid #ffffff';
+            }
+        }
+        for (var i = 1; i < 91; i++) {
+            var img = document.createElement('img');
+            img.id = 'CardTumb-' + i;
+            img.src = './small/' + i + '.jpg';
+            img.alt = 'Карточка ' + i;
+            img.style.cursor = 'pointer';
+            if (i === 1) {
+            img.style.border = '1px solid #75caeb';
+            } else {
+            img.style.border = '1px solid #ffffff';
+            }
+            img.addEventListener('click', changeCard);
+            sidebar.appendChild(img);
+        }
+    </script>
+</body>
+</html>
