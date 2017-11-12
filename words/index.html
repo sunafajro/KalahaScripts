@@ -8,7 +8,7 @@
     <title>WordGame</title>
     <style>
       body {
-        padding-top: 60px;
+        padding-top: 30px;
       }
       .response-block:hover {
         border-color: #bce8f1;
@@ -24,6 +24,11 @@
 <body>
     <div id="js-root" class="container">
       <div class="row">
+        <div class="col-sm-12 text-center">
+          <h3>Общий счет: <span id="count">0</span></h3>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-sm-8 col-sm-offset-2 jumbotron text-center">
           <h1 id="quizWord"></h1>
         </div>
@@ -31,11 +36,23 @@
       <div id="responses" class="row"></div>
       <div class="row">
         <div class="col-sm-12 text-center">
-          <a class="btn btn-lg btn-danger" href="../docs/index.html">На главную</a>
-          <button class="btn btn-lg btn-success" onClick="startGame()">Еще раз!</button>
+          <button class="btn btn-lg btn-success" onClick="startGame()">
+            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            Еще раз!
+          </button>
         </div>
       </div>
     </div>
+    <audio id="teres">
+      <source src="./teres.ogg" type="audio/ogg">
+      <source src="./teres.mp3" type="audio/mp3">
+      Ваш браузер не поддерживает тег audio!
+    </audio>
+    <audio id="teres_mar">
+      <source src="./teres_mar.ogg" type="audio/ogg">
+      <source src="./teres_mar.mp3" type="audio/mp3">
+      Ваш браузер не поддерживает тег audio!
+    </audio>
     <script src="./app.js"></script>
 </body>
 </html>
