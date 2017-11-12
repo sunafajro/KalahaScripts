@@ -133,7 +133,6 @@
         var wordEl = document.querySelector('#quizWord');
         wordEl.innerText = word.cv;
         var i = 1;
-        console.log(responses);
         Object.keys(responses).forEach(el => {
           tmp = document.querySelector('#response-' + i);
           tmp.innerText = responses[el].ru;
@@ -144,11 +143,6 @@
 
     function checkResponse(e) {      
       var n = e.target.id.substr(-1, 1);
-      console.log('данные ', data);
-      console.log('идентификатор ответа ' + e.target.id);
-      console.log('номер ответа ' + n);
-      console.log('загаданное слово ' + data.word.cv);
-      console.log('выбранное слово ' + data.responses[n].cv);
       if (data.responses[n].cv === data.word.cv) {
         var el = document.querySelector('#panel-' + n);
         el.classList.remove("panel-default", "response-block");
