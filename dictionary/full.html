@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>Словарь</title>
+  </head>
+  <body>
+    <div id="dict-root">
+      <div class="row">
+        <div
+          class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+          style="display:flex; margin-bottom: 1rem"
+        >
+          <button
+            class="btn btn-xs"
+            style="margin-right: 0.2rem"
+            @click="addSymbol('ӑ')"
+          >
+            ӑ
+          </button>
+          <button
+            class="btn btn-xs"
+            style="margin-right: 0.2rem"
+            @click="addSymbol('ӗ')"
+          >
+            ӗ
+          </button>
+          <button
+            class="btn btn-xs"
+            style="margin-right: 0.2rem"
+            @click="addSymbol('ҫ')"
+          >
+            ҫ
+          </button>
+          <button
+            class="btn btn-xs"
+            style="margin-right: 0.2rem"
+            @click="addSymbol('ӳ')"
+          >
+            ӳ
+          </button>
+          <input
+            class="form-control input-sm"
+            style="margin-right: 0.2rem"
+            type="text"
+            v-model="search"
+            @keyup.enter="getSearch"
+          />
+          <button
+            class="btn btn-xs btn-info"
+            style="margin-right: 0.2rem"
+            @click="getSearch"
+          >
+            Шыра
+          </button>
+          <button class="btn btn-xs btn-warning" @click="clearSearch">
+            Тасат
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Чӑвашла</th>
+                <th>Вырӑсла</th>
+                <th>Вӗренев</th>
+                <th>Кӗнеке</th>
+              </tr>
+            </thead>
+            <tbody v-if="terms && terms.length">
+              <tr :key="'term-' + term.id" v-for="term in terms">
+                <td>{{ term.cv }}</td>
+                <td>{{ term.ru }}</td>
+                <td>{{ term.chapter }}</td>
+                <td>{{ term.book }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <button class="btn btn-xs" @click="previous" v-if="offset > 0">
+            Назад
+          </button>
+        </div>
+        <div class="col-xs-4 text-center"><b>Найдено слов:</b> {{ total }}</div>
+        <div class="col-xs-4 text-right">
+          <button
+            class="btn btn-xs"
+            @click="next"
+            v-if="offset + limit < total"
+          >
+            Вперед
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+      var vm = new Vue({
+        el: "#dict-root",
+        data: {
+          limit: 20,
+          offset: 0,
+          search: "",
+          terms: [],
+          total: 0
+        },
+        created() {
+          return this.getTerms();
+        },
+        methods: {
+          getTerms() {
+            const url =
+              "https://backend.кала-ха.рф/api/terms?limit=" +
+              this.limit +
+              "&offset=" +
+              this.offset +
+              "&search=" +
+              this.search;
+            return fetch(url)
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  throw new Error(
+                    "Ошибка! Не удалось получить данные словаря!"
+                  );
+                }
+              })
+              .then(data => {
+                this.terms = data.terms;
+                this.total = data.total;
+              })
+              .catch(e => {
+                console.log(e);
+              });
+          },
+          addSymbol(s) {
+            this.search = this.search + s;
+          },
+          getSearch() {
+            this.offset = 0;
+            return this.getTerms();
+          },
+          clearSearch() {
+            this.search = "";
+            this.offset = 0;
+            return this.getTerms();
+          },
+          previous() {
+            this.offset -= this.limit;
+            return this.getTerms();
+          },
+          next() {
+            this.offset += this.limit;
+            return this.getTerms();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
